@@ -1,0 +1,5 @@
+## Interface: 70000
+## Title: TinyFact
+## Author: Raymond Albrigtsen - Znat@EU-Stormscale <raymond@paranoid.no>
+## Version: 0.1
+TinyFact.lua
