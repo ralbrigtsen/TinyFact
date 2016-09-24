@@ -3,7 +3,7 @@
 -- Changes: Added needed xp to forgeframe.
 -- Codeninja from Steinop@Stormscale
 
-print('TinyFact v1.1 loaded!')
+print('TinyFact v1.2 loaded!')
 
 local TinyFact_EventFrame = CreateFrame("Frame")
 
