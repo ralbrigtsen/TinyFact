@@ -3,7 +3,7 @@
 -- Changes: Added needed xp to forgeframe.
 -- Codeninja from Steinop@Stormscale
 
-print('TinyFact v1.3 loaded!')
+print('TinyFact v1.3.1 loaded!')
 
 local TinyFact_EventFrame = CreateFrame("Frame")
 
@@ -20,7 +20,6 @@ function SlashCmdList.TINYFACT(msg, editbox)
 end
 
 TinyFact_EventFrame:RegisterEvent("ARTIFACT_XP_UPDATE")
-TinyFact_EventFrame:RegisterEvent("ADDON_LOADED")
 TinyFact_EventFrame:SetScript("OnEvent",
   function(self, event, ...)
     local TinyFactRank = select(6,C_ArtifactUI.GetEquippedArtifactInfo())
