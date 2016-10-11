@@ -36,9 +36,8 @@ end)
 local TinyFactPerk = CreateFrame"Frame"
 
 TinyFactPerk:Hide()
-TinyFactPerk:RegisterEvent"ARTIFACT_XP_UPDATE"
-TinyFactPerk:RegisterEvent"ARTIFACT_UPDATE"
-TinyFactPerk:RegisterEvent"ADDON_LOADED"
+TinyFactPerk:RegisterEvent("ARTIFACT_XP_UPDATE")
+TinyFactPerk:RegisterEvent("ADDON_LOADED")
 TinyFactPerk:SetScript("OnEvent", function(self, event, ...)
       if event == "ARTIFACT_XP_UPDATE" then
          if ArtifactFrame and ArtifactFrame.PerksTab.TitleContainer:IsShown() then
@@ -51,7 +50,7 @@ TinyFactPerk:SetScript("OnEvent", function(self, event, ...)
       if event == "ADDON_LOADED" then
          local addon = ...
          if addon == "Blizzard_ArtifactUI" then
-            self:UnregisterEvent"ADDON_LOADED"
+            self:UnregisterEvent("ADDON_LOADED")
             orig_SetText = ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel.SetText
             ArtifactFrame.PerksTab.TitleContainer:SetScript("OnUpdate", nil) 
             local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI.GetArtifactInfo()
