@@ -51,6 +51,14 @@ TinyFactPerk:SetScript("OnEvent", function(self, event, ...)
          local addon = ...
          if addon == "Blizzard_ArtifactUI" then
             self:UnregisterEvent"ADDON_LOADED"
+            ArtifactFrame.PerksTab.TitleContainer:SetScript("OnUpdate", nil) 
+            local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI.GetArtifactInfo()
+            local numPoints, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP)
+            if(numPoints > 0) then
+               ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c1188FF88(".. numPoints .." UPGRADE!)\124r")
+            else 
+               ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")   
+            end
             hooksecurefunc(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel,"SetText",function()
                local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI.GetArtifactInfo()
                local numPoints, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP)
@@ -60,14 +68,6 @@ TinyFactPerk:SetScript("OnEvent", function(self, event, ...)
                   ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")   
                end
             end)
-            ArtifactFrame.PerksTab.TitleContainer:SetScript("OnUpdate", nil) 
-               local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI.GetArtifactInfo()
-               local numPoints, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP)
-               if(numPoints > 0) then
-                  ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c1188FF88(".. numPoints .." UPGRADE!)\124r")
-               else 
-                  ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")   
-               end
          end
       end
 end)
