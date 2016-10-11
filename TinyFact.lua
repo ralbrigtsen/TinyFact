@@ -6,6 +6,7 @@
 print('TinyFact v1.3.3 loaded!')
 
 local TinyFact_EventFrame = CreateFrame("Frame")
+local orig_SetText
 
 SLASH_TINYFACT1, SLASH_TINYFACT2 = '/tf', '/tinyfact'; 
 function SlashCmdList.TINYFACT(msg, editbox) 
@@ -44,35 +45,31 @@ TinyFactPerk:SetScript("OnEvent", function(self, event, ...)
             local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI.GetArtifactInfo()
             local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
             
-            ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")
+            orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")
          end
       end
       if event == "ADDON_LOADED" then
          local addon = ...
          if addon == "Blizzard_ArtifactUI" then
             self:UnregisterEvent"ADDON_LOADED"
+            orig_SetText = ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel.SetText
             ArtifactFrame.PerksTab.TitleContainer:SetScript("OnUpdate", nil) 
             local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI.GetArtifactInfo()
             local numPoints, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP)
             if(numPoints > 0) then
-               ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c1188FF88(".. numPoints .." UPGRADE!)\124r")
+               orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c1188FF88(".. numPoints .." UPGRADE!)\124r")
             else 
-               ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")   
+               orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")   
             end
             hooksecurefunc(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel,"SetText",function()
                local _, _, _, _, totalXP, pointsSpent = C_ArtifactUI.GetArtifactInfo()
                local numPoints, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP)
                if(numPoints > 0) then
-                  ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c1188FF88(".. numPoints .." UPGRADE!)\124r")
+                  orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c1188FF88(".. numPoints .." UPGRADE!)\124r")
                else 
-                  ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel:SetText(xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")   
+                  orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")   
                end
             end)
          end
       end
 end)
-
-
-
-
-
