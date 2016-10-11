@@ -1,9 +1,9 @@
--- TinyFact by Znat@Stormscale (EU)
--- Version 1.3
--- Changes: Added needed xp to forgeframe.
--- Codeninja from Steinp@Stormscale
+-- TinyFact by Znat@Stormscale (EU) & Steinp@Stormscale
+-- Version 1.3.4
+-- www.mindfields.no
 
-print('TinyFact v1.3.3 loaded!')
+
+print('TinyFact v1.3.4 loaded!')
 
 local TinyFact_EventFrame = CreateFrame("Frame")
 local orig_SetText
