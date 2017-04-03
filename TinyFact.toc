@@ -1,4 +1,4 @@
-## Interface: 70200
+## Interface: 72000
 ## Title: TinyFact
 ## Author: Raymond Albrigtsen - Znat@EU-Stormscale <raymond@paranoid.no>
 ## Version: 1.3.5
