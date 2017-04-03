@@ -36,41 +36,28 @@ TinyFact_EventFrame:SetScript("OnEvent",
 end)
 
 local TinyFactPerk = CreateFrame"Frame"
-
+local SetText
 TinyFactPerk:Hide()
-TinyFactPerk:RegisterEvent("ARTIFACT_XP_UPDATE")
-TinyFactPerk:RegisterEvent("ADDON_LOADED")
-TinyFactPerk:SetScript("OnEvent", function(self, event, ...)
-      if event == "ARTIFACT_XP_UPDATE" then
-         if ArtifactFrame and ArtifactFrame.PerksTab.TitleContainer:IsShown() then
-            local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, tier = C_ArtifactUI.GetArtifactInfo()
-            local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, tier)            
-            
-            orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")
-         end
-      end
-      if event == "ADDON_LOADED" then
-         local addon = ...
-         if addon == "Blizzard_ArtifactUI" then
-            self:UnregisterEvent("ADDON_LOADED")
-            orig_SetText = ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel.SetText
-            ArtifactFrame.PerksTab.TitleContainer:SetScript("OnUpdate", nil) 
-            local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, tier = C_ArtifactUI.GetArtifactInfo()
-            local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, tier) 
-            if(numPoints > 0) then
-               orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c1188FF88(".. numPoints .." UPGRADE!)\124r")
-            else 
-               orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")   
-            end
-            hooksecurefunc(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel,"SetText",function()
-            local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, tier = C_ArtifactUI.GetArtifactInfo()
-            local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, tier) 
-               if(numPoints > 0) then
-                  orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c1188FF88(".. numPoints .." UPGRADE!)\124r")
-               else 
-                  orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")   
-               end
-            end)
-         end
-      end
+
+TinyFactPerk:RegisterEvent"ADDON_LOADED"
+TinyFactPerk:SetScript("OnEvent", function(self, event, arg1)
+  if event == "ARTIFACT_XP_UPDATE" and ArtifactFrame and ArtifactFrame:IsShown() then _SetText() end
+  if event == "ADDON_LOADED" and arg1 == "Blizzard_ArtifactUI" then
+    self:UnregisterEvent"ADDON_LOADED"
+    TinyFactPerk:RegisterEvent"ARTIFACT_XP_UPDATE"
+    SetText = ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel.SetText
+    ArtifactFrame.PerksTab.TitleContainer:SetScript("OnUpdate", nil)
+    _SetText()
+    hooksecurefunc(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel,"SetText", _SetText)
+  end
 end)
+
+function _SetText()
+  local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, tier = C_ArtifactUI.GetArtifactInfo()
+  local numPoints, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, tier)
+  if numPoints > 0 then
+    SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c1188FF88(+" .. xpForNextPoint-xp ..") +" .. numPoints .."\124r")
+  else
+    SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")
+  end
+end
