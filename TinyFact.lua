@@ -43,8 +43,8 @@ TinyFactPerk:RegisterEvent("ADDON_LOADED")
 TinyFactPerk:SetScript("OnEvent", function(self, event, ...)
       if event == "ARTIFACT_XP_UPDATE" then
          if ArtifactFrame and ArtifactFrame.PerksTab.TitleContainer:IsShown() then
-            local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, _, artifactTier = C_ArtifactUI.GetArtifactInfo()
-            local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, artifactTier);
+            local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, tier = C_ArtifactUI.GetArtifactInfo()
+            local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, tier)            
             
             orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")
          end
@@ -55,16 +55,16 @@ TinyFactPerk:SetScript("OnEvent", function(self, event, ...)
             self:UnregisterEvent("ADDON_LOADED")
             orig_SetText = ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel.SetText
             ArtifactFrame.PerksTab.TitleContainer:SetScript("OnUpdate", nil) 
-            local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, _, artifactTier = C_ArtifactUI.GetArtifactInfo()
-            local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, artifactTier);
+            local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, tier = C_ArtifactUI.GetArtifactInfo()
+            local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, tier) 
             if(numPoints > 0) then
                orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c1188FF88(".. numPoints .." UPGRADE!)\124r")
             else 
                orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c11FF8888(+" .. xpForNextPoint-xp ..")\124r")   
             end
             hooksecurefunc(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel,"SetText",function()
-            local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, _, artifactTier = C_ArtifactUI.GetArtifactInfo()
-            local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, artifactTier);
+            local _, _, _, _, totalXP, pointsSpent, _, _, _, _, _, _, tier = C_ArtifactUI.GetArtifactInfo()
+            local _, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP, tier) 
                if(numPoints > 0) then
                   orig_SetText(ArtifactFrame.PerksTab.TitleContainer.PointsRemainingLabel, xp .. " \124c1188FF88(".. numPoints .." UPGRADE!)\124r")
                else 
