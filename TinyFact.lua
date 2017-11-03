@@ -15,6 +15,7 @@ local function ReadableNumber(num, places)
     if not num then
         return 0
     elseif num >= 2000000000 then
+    	local placeValue = ("%%.2f"):format(places or 0)
         ret = placeValue:format(num / 1000000000) .. "bn" -- billion
     elseif num >= 2000000 then
         ret = placeValue:format(num / 1000000) .. "m" -- million
